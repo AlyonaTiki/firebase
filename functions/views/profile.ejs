@@ -1,0 +1,98 @@
+<% include partials/head.ejs %>
+    <link rel='stylesheet' href='/style.css'>
+
+    <body>
+        <% include partials/header.ejs %>
+
+            <!--add a profile image-->
+            <p>Add a profile image</p>
+            <input type="file" id="profile_img_file" accept="image/gif, image/jpeg, image/png">
+            <button id="submit">Submit Image</button>
+
+            <div id="posts">
+                <h2>My notes:
+                </h2>
+                <% if (data.posts) { %>
+                    <% let keys = Object.keys(data.posts); %>
+                        <% keys.forEach(function(key) { %>
+                            <% let post = data.posts[key]; %>
+                                <div class="post">
+                                    <div class="text">
+                                        <%= post.text %>
+                                    </div>
+                                    <% let d = new Date(post.date); %>
+                                        <div class="date">
+                                            created on
+                                            <%= d.toLocaleString('en-us', {
+							month: 'long',
+							weekday: 'short',
+							day: 'numeric'
+						}); %>
+                                        </div>
+                                        <% if (post.public){ %>
+                                            <div class="public">
+                                                <p>public</p>
+                                            </div>
+                                            <%} else { %>
+                                                <div class="private">
+                                                    <p>private</p>
+                                                </div>
+                                                <% } %>
+                                                    <button id="delete" onclick={deletePost("<%= key %>")}>delete</button>
+
+                                </div>
+            </div>
+            <% }); %>
+                <% } else { %>
+                    <p>This user has not posted yet :</p>
+                    <% } %>
+
+                        <script>
+                            document.getElementById("submit").onclick = function() {
+                                const user = firebase.auth().currentUser;
+                                const file = document.getElementById("profile_img_file").files[0];
+                                const storage = firebase.storage();
+                                const ref = storage.ref('/users' + user.uid);
+                                console.log(user, file);
+                                ref.child('profile_img').put(file)
+                                    .then(function(file) {
+                                        console.log(file);
+                                        const url = file.downloadURL;
+                                        const db = firebase.database();
+                                        const dbRef = db.ref('/users/' + user.uid + "/profile_img_url");
+                                        dbRef.set(url)
+                                            .then(function(success) {
+                                                user.updateProfile({
+                                                        photoURL: file.downloadURL
+                                                    })
+                                                    .then(function(success) {
+                                                        location.reload();
+                                                    })
+                                                    .catch(function(error) {
+                                                        console.log(error);
+                                                    })
+                                            })
+                                            .catch(function(error) {
+                                                console.log(error);
+                                            });
+                                    })
+                                    .catch(function(error) {
+                                        console.log(error);
+                                    });
+                            }
+
+                            function deletePost(key) {
+                                var db = firebase.database();
+                                const uid = firebase.auth().currentUser.uid; 
+                                var ref = db.ref('/users/' + uid + '/posts/' + key);
+                                ref.remove()
+                                    .then(function(success) {
+                                        location.reload(); 
+                                    })
+                                    .catch
+                            }
+
+                        </script>
+    </body>
+
+    </html>

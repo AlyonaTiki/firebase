@@ -1,0 +1,32 @@
+<% include partials/head.ejs %>
+<link rel='stylesheet' href='/style.css'>
+    <html>
+
+    <body>
+        <% include partials/header.ejs %>
+
+            <!--  display our users  -->
+            <div id="users">
+                <h1> Users:</h1>
+                <!-- <%= JSON.stringify(data); %> -->
+                <% let keys = Object.keys(data); %>
+                    <% keys.forEach(function(key) { %>
+                        <% const user = data[key]; %>
+                            <div class="user">
+	<% if (user.profile_img_url) { %>
+		<img src="<%= user.profile_img_url %>" width="100">
+	<% } %>
+	<a href="/user/<%= key %>"><%= user.name %></a>
+</div>
+                            <% }); %>
+            </div>
+    
+    </body>
+
+    </html>
+
+
+    <!--
+
+	return postRef.push(post).key
+}-->

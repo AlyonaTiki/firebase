@@ -1,0 +1,56 @@
+<div id="header">
+
+    <div id="menu">
+        <a href="/">Home</a>
+        <a href="/users">Users</a>
+        <div id="not-logged-in" style="display:none;">
+            <a href="/login">Login</a>
+            <a href="/create">Create new Account</a>
+
+        </div>
+        <div id="sign-out" style="display:none;"> <a onclick={signOut()}> Sign Out</a>
+        </div>
+        <div id="logged-in" style="display:none;">
+    
+        </div>
+    </div>
+    <h2>Welcome to the Notes App :)</h2>
+    <div id="display-name"></div>
+    <img id="profile-img" width="100">
+</div>
+<!--    <p id="display-name">Hello world!</p>-->
+<script>
+    const userName = document.getElementById("display-name");
+    const profileImg = document.getElementById("profile-img");
+
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            userName.textContent = "Hello, " + user.displayName;
+            if (user.photoURL){
+                profileImg.src = user.photoURL;
+                const userInput = document.getElementById("userInput");
+                if (userInput)
+                    userInput.value = user.uid;
+            }
+            document.getElementById("sign-out").style.display = "inline-block";
+            document.getElementById("logged-in").style.display = "inline-block";
+            
+            //Create link with uid for /profile page
+            var a = document.createElement('a');
+            var linkText = document.createTextNode('Profile');
+            a.appendChild(linkText);
+            a.href = "/profile/" + user.uid;
+            document.getElementById('logged-in').appendChild(a);
+
+        } else {
+            document.getElementById("not-logged-in").style.display = "inline-block";
+        }
+    });
+
+
+    function signOut() {
+        firebase.auth().signOut();
+        location.reload();
+    }
+
+</script>

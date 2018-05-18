@@ -1,0 +1,53 @@
+<% include partials/head.ejs %>
+    <link rel='stylesheet' href='/style.css'>
+    <html>
+
+    <body>
+        <% include partials/header.ejs %>
+            
+                <div id="create">
+                    <input type="text" placeholder="Enter name" id="nameInput">
+                    <input type="text" placeholder="Enter email" id="emailInput">
+                    <input type="password" placeholder="Enter password" id="passwordInput">
+                    <button onclick={createUser()}>Create Account</button>
+                    <p id="error"></p>
+                </div>
+            
+            <script>
+                function createUser() {
+                    //                    var email = emailInput.value;
+                    //                    var password = passwordInput.value;
+                    firebase.auth().createUserWithEmailAndPassword(emailInput.value, passwordInput.value)
+                        .then(function(user) {
+                            user.updateProfile({
+                                    displayName: nameInput.value
+                                })
+                                .then(function(success) {
+                                    const db = firebase.database();
+                                    const ref = db.ref("/users/" + user.uid);
+                                    ref.set({
+                                            name: nameInput.value
+                                        })
+                                        .then(function(success) {
+                                            location.href = "/";
+                                        })
+                                        .catch(function(error) {
+                                            console.log(error);
+                                        });
+                                })
+                                .catch(function(error) {
+                                    console.log(error);
+                                });
+
+                        })
+                        .catch(function(error) {
+                            console.log(error);
+                            const errorMessage = document.getElementById("error");
+                            errorMessage.textContent = error.message;
+                        })
+                }
+
+            </script>
+    </body>
+
+    </html>

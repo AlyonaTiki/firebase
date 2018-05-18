@@ -1,0 +1,106 @@
+<% include partials/head.ejs %>
+<link rel='stylesheet' href='/style.css'>
+    <body>
+        <% include partials/header.ejs %>
+
+            <!-- user posts go here -->
+            <div id="posts">
+                <h2>Posts by
+                    <%= data.name %>
+                </h2>
+                <% if (data.posts) { %>
+                    <!-- show posts -->
+                    <% let keys = Object.keys(data.posts); %>
+                        <% keys.forEach(function(key) { %>
+                            <% let post = data.posts[key]; %>
+                                <div class="post">
+                                    <% if (post.public){ %>
+                                    <% if (data.profile_img_url) { %>
+                                       
+                                    <img src="<%= data.profile_img_url %>" width="80">
+                                        <% } %>
+                                            <a href="/user/<%= key %>">
+                                                <%= user.name %>
+                                            </a>
+                                
+                                <div class="text">
+                                    <%= post.text %>
+                                </div>
+                                <% let d = new Date(post.date); %>
+                                    <div class="date">
+                                        posted on
+                                        <%= d.toLocaleString('en-us', {
+							month: 'long',
+							weekday: 'short',
+							day: 'numeric'
+						}); %>
+                        
+                                  </div>
+
+                                    <div id="like">
+                                        <button onclick={likePost("<%= key %>")}>Like</button>
+                                        <button onclick={unlikePost("<%= key %>")}>Unlike</button>
+                                        <span id="likes">
+                                            <% if (post.likes) { %>
+		                                          <%= Object.keys(post.likes).length %> 
+	                                       <% } else { %>
+                                                0
+                                            <% } %>
+                                            likes
+                                        </span>
+                                    </div>
+
+                        <% } %>
+            </div>
+                </div>
+            <% }); %>
+                <% } else { %>
+                    <p>This user has not posted yet :</p>
+                    <% } %>
+
+
+                        <script>
+                            function likePost(postId) {
+                                const currentUser = firebase.auth().currentUser;
+                                const posterId = "<%= user %>";
+                                const db = firebase.database();
+                                const ref = db.ref('/users/' +
+                                    posterId +
+                                    '/posts/' +
+                                    postId +
+                                    '/likes/' +
+                                    currentUser.uid);
+                                ref.set({
+                                        name: currentUser.displayName
+                                    })
+                                    .then(function(success) {
+                                        location.reload();
+                                    })
+                                    .catch(function(error) {
+                                        console.log(error);
+                                    });
+                            }
+
+                            function unlikePost(postId) {
+                                const currentUser = firebase.auth().currentUser;
+                                const posterId = "<%= user %>";
+                                const db = firebase.database();
+                                db.ref('users')
+                                    .child(posterId)
+                                    .child('posts')
+                                    .child(postId)
+                                    .child('likes')
+                                    .child(currentUser.uid)
+                                    .remove()
+                                    .then(function(success) {
+                                        location.reload();
+                                    })
+                                    .catch(function(error) {
+                                        console.log(error);
+                                    });
+                            }
+
+                        </script>
+    </body>
+
+    </html>

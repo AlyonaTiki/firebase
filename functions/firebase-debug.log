@@ -1,0 +1,120 @@
+[debug] [2018-05-15T00:30:32.448Z] ----------------------------------------------------------------------
+[debug] [2018-05-15T00:30:32.451Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy
+[debug] [2018-05-15T00:30:32.451Z] CLI Version:   3.18.4
+[debug] [2018-05-15T00:30:32.451Z] Platform:      darwin
+[debug] [2018-05-15T00:30:32.451Z] Node Version:  v7.7.1
+[debug] [2018-05-15T00:30:32.452Z] Time:          Mon May 14 2018 20:30:32 GMT-0400 (EDT)
+[debug] [2018-05-15T00:30:32.452Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-05-15T00:30:32.465Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-05-15T00:30:32.465Z] > authorizing via signed-in user
+[debug] [2018-05-15T00:30:32.468Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/newapp-6044b  
+  
+ Mon May 14 2018 20:30:32 GMT-0400 (EDT)
+[debug] [2018-05-15T00:30:33.041Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-15T00:30:33.044Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/newapp-6044b/tokens  
+  
+ Mon May 14 2018 20:30:33 GMT-0400 (EDT)
+[debug] [2018-05-15T00:30:33.447Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'newapp-6044b'...
+[info] 
+[info] i  deploying functions, hosting
+[debug] [2018-05-15T00:30:35.315Z] > [functions] package.json contents: {
+  "name": "new_node_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "firebase-admin": "^5.10.0",
+    "firebase-functions": "^1.0.2"
+  }
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2018-05-15T00:30:35.316Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/newapp-6044b?view=CONSUMER_VIEW  
+  
+ Mon May 14 2018 20:30:35 GMT-0400 (EDT)
+[debug] [2018-05-15T00:30:35.317Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/newapp-6044b?view=CONSUMER_VIEW  
+  
+ Mon May 14 2018 20:30:35 GMT-0400 (EDT)
+[debug] [2018-05-15T00:30:35.908Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-15T00:30:35.919Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2018-05-15T00:30:35.921Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/newapp-6044b  
+  
+ Mon May 14 2018 20:30:35 GMT-0400 (EDT)
+[debug] [2018-05-15T00:30:36.314Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-15T00:30:36.315Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/900047522356:getServerAppConfig  
+  
+ Mon May 14 2018 20:30:36 GMT-0400 (EDT)
+[debug] [2018-05-15T00:30:36.725Z] <<< HTTP RESPONSE 200
+[info] i  functions: preparing functions directory for uploading...
+[debug] [2018-05-15T00:30:36.732Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/newapp-6044b/configs  
+  
+ Mon May 14 2018 20:30:36 GMT-0400 (EDT)
+[debug] [2018-05-15T00:30:36.956Z] <<< HTTP RESPONSE 200
+[info] i  functions: packaged functions (145.94 KB) for uploading
+[debug] [2018-05-15T00:30:37.465Z] >>> HTTP REQUEST POST https://cloudfunctions.googleapis.com/v1/projects/newapp-6044b/locations/us-central1/functions:generateUploadUrl  
+  
+ Mon May 14 2018 20:30:37 GMT-0400 (EDT)
+[debug] [2018-05-15T00:30:37.955Z] <<< HTTP RESPONSE 200
+[debug] [2018-05-15T00:30:37.957Z] >>> HTTP REQUEST PUT https://storage.googleapis.com/gcf-upload-us-central1-f62327c2-a8ea-4651-8bc6-645ce03742c8/4875ac32-6d9c-42bd-907e-02efc14ac77d.zip?GoogleAccessId=900047522356@cloudservices.gserviceaccount.com&Expires=1526346038&Signature=ZGw6%2FrRRQkdACQGsEuNxdoskvaidgfyxfpA9JJQDYBHbOx0BT2by3r71CF8jRwYnBZO8bTkNM%2B4U1hffrXq5mYNsxEPKJU7pLgYdkfa1Yzj0bul8qck3nz%2BWChFHiNd099d82hyYGxmobqrpZ7KT6WXfycvPRp6lUpeLniowWJGLzn5gGNX2uy14dWoGmAsOGVOrKU4aOPrAWYPgMrqSZg1%2FWrt7vH3qn%2B7YwvQomm2FqqASWgBmuqhLaC4R4srt28TBAyPy02rGT2uVao%2F%2FrHF2AEFM6deIjnAH45aXql4DrLS9Lg0kMhITivezX8BYYY3lM5aHrvnIs8d9sdQoBA%3D%3D  
+ ReadStream {
+  _readableState: 
+   ReadableState {
+     objectMode: false,
+     highWaterMark: 65536,
+     buffer: BufferList { head: [Object], tail: [Object], length: 1 },
+     length: 65536,
+     pipes: null,
+     pipesCount: 0,
+     flowing: null,
+     ended: false,
+     endEmitted: false,
+     reading: false,
+     sync: false,
+     needReadable: false,
+     emittedReadable: true,
+     readableListening: false,
+     resumeScheduled: false,
+     defaultEncoding: 'utf8',
+     ranOut: false,
+     awaitDrain: 0,
+     readingMore: false,
+     decoder: null,
+     encoding: null },
+  readable: true,
+  domain: null,
+  _events: { end: [Function] },
+  _eventsCount: 1,
+  _maxListeners: undefined,
+  path: '/var/folders/7_/btklr2yd2llcdzzgq9n9m9z40000gn/T/firebase-functions-44766db3Da7qQ6yV.zip',
+  fd: 19,
+  flags: 'r',
+  mode: 438,
+  start: undefined,
+  end: undefined,
+  autoClose: true,
+  pos: undefined,
+  bytesRead: 65536 } 
+ Mon May 14 2018 20:30:37 GMT-0400 (EDT)
+[debug] [2018-05-15T00:30:38.360Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: functions folder uploaded successfully
+[info] i  hosting: preparing public directory for upload...
+[debug] [2018-05-15T00:30:38.453Z] TypeError: no files or directories specified
+    at Object.module.exports (/usr/local/lib/node_modules/firebase-tools/node_modules/tar/lib/create.js:20:11)
+    at module.exports (/usr/local/lib/node_modules/firebase-tools/lib/prepareUpload.js:25:6)
+    at module.exports (/usr/local/lib/node_modules/firebase-tools/lib/deploy/hosting/deploy.js:29:10)
+    at _chain (/usr/local/lib/node_modules/firebase-tools/lib/deploy/index.js:26:38)
+    at /usr/local/lib/node_modules/firebase-tools/lib/deploy/index.js:29:14
+    at process._tickDomainCallback (internal/process/next_tick.js:135:7)
+[error] 
+[error] Error: An unexpected error has occurred.

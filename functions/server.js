@@ -1,0 +1,94 @@
+const express = require('express');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const admin = require('firebase-admin');
+const serviceAccount = require('./key.json');
+const functions = require('firebase-functions');
+
+const firebaseAdmin = admin.initializeApp({
+	credential: admin.credential.cert(serviceAccount),
+	databaseURL: "https://newapp-6044b.firebaseio.com"
+});
+const db = firebaseAdmin.database();
+
+function isAuthenticated(request, response, next) {
+	const uid = request.query.uid;
+    firebaseAdmin.auth().getUser(uid)
+        .then(function(user){
+        next();
+    })
+    .catch(function(error){
+        console.log(error);
+        response.redirect('/');
+    });
+}
+ 
+const app = express();
+app.use(logger('dev'));
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static('public'));
+
+app.get('/', function(request, response){
+	response.render('home.ejs');
+});
+app.get('/login', function(request, response){
+	response.render('login.ejs');
+});
+
+app.get('/create', function(request, response){
+	response.render('create.ejs');
+});
+ 
+app.get('/about', function(request, response){
+	response.send("<h1>Welcome to my about section</h1><br><a href='/'>home</a>");
+});
+
+
+
+app.get('/post', isAuthenticated, function(request, response){
+	response.render('post.ejs');
+});
+
+app.get('/profile/:id', function(request, response) {
+    const ref = db.ref('/users/' + request.params.id);
+    ref.once('value')
+	.then(function(snapshot){
+		response.render('profile.ejs', {
+			data: snapshot.val(),
+            user: request.params.id
+		});
+	});
+});
+
+app.get('/users', function(request, response){
+    const ref = db.ref('users');
+    ref.once('value')
+        .then(function(snapshot){
+            response.render('users.ejs', {
+                data: snapshot.val()
+            });
+    });
+    
+    
+});
+app.get('/user/:id', function(request, response) {
+	const ref = db.ref('/users/' + request.params.id);
+    ref.once('value')
+	.then(function(snapshot){
+		response.render('user.ejs', {
+			data: snapshot.val(),
+            user: request.params.id
+		});
+	});
+});
+
+const port = process.env.PORT || 8000;
+app.listen(port, function() {
+	console.log("App running on port ", port);
+});
+exports.app = functions.https.onRequest(app);
+
+
